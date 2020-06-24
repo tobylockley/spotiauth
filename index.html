@@ -11,12 +11,14 @@
             $(function onLoad() {
                 $('body > *').hide() // Hide all by default
                 let queries = new URLSearchParams(location.search)
-                console.log(queries)
+                console.log(queries.toString())
                 
                 // Populate & show section if param exists
-                $('div').each(() => {
-                    let param = queries.get($(this).attr('id'))
+                $('div').each(function() {
+                    let section = $(this).attr('id')
+                    let param = queries.get(section)
                     if (param) {
+                        console.log('Showing', section)
                         $('#title').show()
                         $(this).find('p').text(param)
                         $(this).show()
@@ -24,13 +26,20 @@
                 })
                 
                 // Send post request to spotify API, get tokens
-                if (queries.get('code') && !queries.get('error')) {
+                let auth_code = queries.get('code')
+                if (auth_code && !queries.get('error')) {
                     let body = {
                         grant_type: 'authorization_code',
-                        code: queries.get('code'),
+                        code: auth_code,
                         redirect_uri: 'https://tobylockley.github.io/spotiauth'
                     }
-                    $.post('https://accounts.spotify.com/api/token', body, function(data, status){
+                    $.post({
+                        url: 'https://accounts.spotify.com/api/token',
+                        data: body
+//                         headers: {
+//                             Authorization: `Basic ${}`
+//                         }
+                    }).always(function(data, status) {
                         console.log('Data: ' + data)
                         console.log('Status: ' + status)
                     })
