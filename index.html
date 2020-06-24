@@ -24,7 +24,8 @@
                 
                 // Populate & show section if param exists
                 $('div').each(function() {
-                    showParam($(this).attr('id'), queries.get(section))
+                    let section = $(this).attr('id')
+                    showParam(section, queries.get(section))
                 })
                 
                 // Send post request to spotify API, get tokens
