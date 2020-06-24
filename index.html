@@ -9,26 +9,31 @@
 
         <script>
             $(function onLoad{
-                let queries = new URLSearchParams(location.search);
+                $('body > *').hide() // Hide all by default
+                let queries = new URLSearchParams(location.search)
+                console.log(queries)
+                
                 // Populate & show section if param exists
                 $('div').each(() => {
                     let param = queries.get($(this).attr('id'))
                     if (param) {
+                        $('#title').show()
                         $(this).find('p').text(param)
-                        $(this).css('display', 'block')
+                        $(this).show()
                     }
                 })
+                
+                // Send post request to spotify API, get tokens
                 if (queries.get('code') && !queries.get('error')) {
-                    // Send post request to spotify API, get tokens
                     let body = {
                         grant_type: 'authorization_code',
                         code: queries.get('code'),
                         redirect_uri: 'https://tobylockley.github.io/spotiauth'
                     }
                     $.post('https://accounts.spotify.com/api/token', body, function(data, status){
-                        console.log('Data: ' + data);
-                        console.log('Status: ' + status);
-                    });
+                        console.log('Data: ' + data)
+                        console.log('Status: ' + status)
+                    })
                 }
             })
         </script>
@@ -39,7 +44,7 @@
     </head>
 
     <body>
-            <h3>Spotify Authentication Details:</h3>
+            <h3 id="title">Spotify Authentication Details</h3>
             
             <div id="code">
                 <h4>Authorization code:</h4>
@@ -84,7 +89,16 @@
     </body>
 
     <style>
-        #bg {
+        body {
+            display: flex;
+            justify-content: center;
+        }
+        
+        h3 {
+            text-decoration: underline;
+        }
+        
+        div {
             max-width: 720px;
             margin-right: auto;
             margin-left: auto;
@@ -95,10 +109,6 @@
         
         p {
             font-family: Courier;
-        }
-        
-        div {
-            display: none;
         }
     </style>
 
