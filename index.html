@@ -35,10 +35,10 @@
                     }
                     $.post({
                         url: 'https://accounts.spotify.com/api/token',
-                        data: body
-//                         headers: {
-//                             Authorization: `Basic ${}`
-//                         }
+                        data: body,
+                        headers: {
+                            Authorization: 'Basic MDRlNzMwODFhYzhiNGE4ZDhkYmY4YzM4MmY3YTk1YzY6MjMwYWI3YWViYjM3NDE2YWFjOTI3NjY5Mzc2YzdiZDc='
+                        }
                     }).always(function(data, status) {
                         console.log('Data:', data)
                         console.log('Status:', status)
@@ -100,7 +100,8 @@
     <style>
         body {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
         }
         
         h3 {
